@@ -89,17 +89,20 @@ args = parser.parse_args()
 # load camera configurations and image paths
 cameraConfigs = []
 imagePathArgs = []
+# imagePathArgs = ['./imgs/front.jpeg', './imgs/rear.jpeg', './imgs/left.jpeg', './imgs/right.jpeg']
+args.camera_img_pair=['.\\camera_configs\\front.yaml', '.\\imgs\\front.jpeg', '.\\camera_configs\\rear.yaml', '.\\imgs\\rear.jpeg', '.\\camera_configs\\left.yaml', '.\\imgs\\left.jpeg', '.\\camera_configs\\right.yaml', '.\\imgs\\right.jpeg']
 for aIdx in range(int(len(args.camera_img_pair) / 2.0)):
   with open(os.path.abspath(args.camera_img_pair[2*aIdx])) as stream:
     cameraConfigs.append(yaml.safe_load(stream))
   imagePathArgs.append(args.camera_img_pair[2*aIdx+1])
-  print("imagePathArgs:",imagePathArgs)
-  print("cameraConfigs:",cameraConfigs)
+  # print("camera_img_pair:",args.camera_img_pair)
+  # print("cameraConfigs:",cameraConfigs)
 toDrone = False
 # cameraConfigs = [{'fx': fx1, 'fy': fy1, 'px': px1, 'py': py1, 'yaw': yaw1, 'pitch': pitch1, 'roll': roll1, 'XCam': XCam1, 'YCam': YCam1, 'ZCam': ZCam1},
 #                 {'fx': fx2, 'fy': fy2, 'px': px2, 'py': py2, 'yaw': yaw2, 'pitch': pitch2, 'roll': roll2, 'XCam':XCam2, 'YCam': YCam2, 'ZCam': ZCam2},
 #                 {'fx': fx3, 'fy': fy3, 'px': px3, 'py': py3, 'yaw': yaw3, 'pitch': pitch3, 'roll': roll3, 'XCam': XCam3, 'YCam': YCam3, 'ZCam': ZCam3},
 #                 {'fx': fx4, 'fy': fy4, 'px': px4, 'py': py4, 'yaw': yaw4, 'pitch': pitch4, 'roll': roll4, 'XCam': XCam4, 'YCam': YCam4, 'ZCam': ZCam4}]
+
 cameras = []
 for camera_config in cameraConfigs:
     camera = {
@@ -117,14 +120,37 @@ for camera_config in cameraConfigs:
     cameras.append(camera)
 
 # Now you can access the values for each camera using the index of the camera
-print(cameras[0]['fx']) # Output: 5064.0 from camera[0]
+# print(cameras[0]['fx']) # Output: 5064.0 from camera[0]
 
-if args.drone:
-  toDrone = True
-  with open(os.path.abspath(args.drone)) as stream:
-    droneConfig = yaml.safe_load(stream)
+# if args.drone:
+#   toDrone = True
+#   with open(os.path.abspath(args.drone)) as stream:
+#     droneConfig = yaml.safe_load(stream)
+
+# Define the path to the YAML file
+config_path = './camera_configs/drone.yaml'
+# Load the YAML file and extract the "droneConfig" dictionary
+with open(config_path, 'r') as f:
+    # config = yaml.load(f, Loader=yaml.FullLoader)
+    # droneConfig = config["droneConfig"]
+    droneConfig = yaml.safe_load(f)
+
+
+fxD = droneConfig['fx']
+fyD = droneConfig['fy']
+pxD = droneConfig['px']
+pyD = droneConfig['py']
+yawD = droneConfig['yaw']
+pitchD = droneConfig['pitch']
+rollD = droneConfig['roll']
+XCamD = droneConfig['XCam']
+YCamD = droneConfig['YCam']
+ZCamD = droneConfig['ZCam']
+
+
+
 print("droneConfig:",droneConfig)    
-imagePathArgs = ['./imgs/front.jpeg', './imgs/rear.jpeg', './imgs/left.jpeg', './imgs/right.jpeg']
+
 # load image paths
 imagePaths = []
 if not args.batch:
