@@ -1,8 +1,8 @@
 # camera calibration matrix K
-fx: 5064.0
-fy: 5735.0
-px: 4950.0
-py: 5760.0
+fx: 600.0
+fy: 400.0
+px: 495.0
+py: 576.0
 
 # rotation matrix R (in deg)
 yaw:    0.0
